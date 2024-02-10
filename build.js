@@ -1,8 +1,9 @@
 const { readFileSync, writeFileSync, readdirSync, mkdirSync } = require('node:fs');
 
+const posthtml = require('posthtml');
 const postcss = require('postcss');
-const nunjucks = require('nunjucks')
 const tailwindcss = require('tailwindcss');
+const postHtmlExtend = require('posthtml-extend');
 
 
 mkdirSync('dist', { recursive: true });
@@ -11,13 +12,16 @@ const htmlFiles = readdirSync('src');
 
 console.log(htmlFiles);
 
-htmlFiles.forEach(async (htmlFile) => {
+htmlFiles.forEach((htmlFile) => {
   if (false === /\.html/.test(htmlFile) || true === /^_/.test(htmlFile)) {
     return null;
   }
   const html = readFileSync('src/' + htmlFile);
-  nunjucks.configure('src', { autoescape: true, trimBlocks: true, lstripBlocks: true });
-  const result = nunjucks.renderString(html.toString());
+  const result = posthtml()
+    .use(postHtmlExtend({ root: 'src' }))
+    .process(html, { sync: true })
+    .html
+
   writeFileSync('dist/' + htmlFile, result);
 });
 
