@@ -2,8 +2,7 @@
 
 Static Site Generator for Tailwind CSS. As simple as it gets.
 
-`Tailwind CSS + PostCSS + Nunjucks + bun.js`
-
+`Tailwind CSS + PostCSS + PostHTML + bun.js`
 
 
 ## Development
